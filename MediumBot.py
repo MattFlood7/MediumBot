@@ -21,11 +21,6 @@ def Launch():
     Launch the Medium bot and ask the user what browser they want to use.
     """
 
-    # Check if the file 'config' exists, otherwise quit
-    if os.path.isfile('config') == False:
-        print 'Error! No configuration file.'
-        sys.exit()
-
     # Check if the file 'visitedUsers.txt' exists, otherwise create it
     if os.path.isfile('visitedUsers.txt') == False:
         visitedUsersFile = open('visitedUsers.txt', 'wb')
@@ -169,7 +164,6 @@ def LikeAndCommentOnPost(browser):
     browser: selenium browser used to find the like button and click it.
     """
 
-    browser.get('https://hackernoon.com/object-oriented-tricks-2-law-of-demeter-4ecc9becad85') #TODO remove
     likeButtonXPath = '//div[@data-source="post_actions_footer"]/button'
     ScrollToBottomAndWaitForLoad(browser)
 
@@ -190,20 +184,25 @@ def LikeAndCommentOnPost(browser):
 
     if COMMENT_ON_POSTS:
 
-        comment = random.choice(COMMENTS)
+        #TODO Find method to comment when the article is not hosted on medium.com currently
+        #     found issues with the logic below when not on medium.com.
+        if 'medium.com' in browser.current_url:
+            comment = random.choice(COMMENTS)
 
-        try:
-            print 'Commenting \"'+comment+'\" on the article : \"'+browser.title+'\"'
-            commentButton = browser.find_element_by_xpath('//button[@data-action="respond"]')
-            commentButton.click()
-            time.sleep(5)
-            browser.find_element_by_xpath('//div[@role="textbox"]').send_keys(comment)
-            time.sleep(20)
-            browser.find_element_by_xpath('//button[@data-action="publish"]').click()
-            time.sleep(5)
-        except:
-            print 'Exception thrown when trying to comment on the article: '+browser.title
-            pass
+            try:
+                print 'Commenting \"'+comment+'\" on the article : \"'+browser.title+'\"'
+                commentButton = browser.find_element_by_xpath('//button[@data-action="respond"]')
+                commentButton.click()
+                time.sleep(5)
+                browser.find_element_by_xpath('//div[@role="textbox"]').send_keys(comment)
+                time.sleep(20)
+                browser.find_element_by_xpath('//button[@data-action="publish"]').click()
+                time.sleep(5)
+            except:
+                print 'Exception thrown when trying to comment on the article: '+browser.title
+                pass
+        else:
+            print 'Cannot comment on an article that is not hosted on Medium.com'
 
     print ''
 
