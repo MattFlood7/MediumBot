@@ -26,10 +26,23 @@ PhantomJS:
 If you want to built your own binaries, here is the [build instructions](http://phantomjs.org/build.html) for PhantomJS.
 
 ## Configuration
-Before you run the bot, edit the `config` file to add your account login informations (email, password, and service your login is through Google, Twitter, or Facebook). It's that simple!
+Before you run the bot, edit the configuration portion of the script. This will include your account login information (email, password, and service your login is through, etc.) and other logical values to make the bot more of your own. It's that simple!
+
+```python
+# Configure constants here
+EMAIL = 'youremail@gmail.com'
+PASSWORD = 'password'
+LOGIN_SERVICE = 'Google, Twitter, or Facebook'
+LIKE_POSTS = True
+MAX_LIKES_ON_POST = 50 # only like posts with less than X posts.
+COMMENT_ON_POSTS = True
+COMMENTS = ['Great read!', 'Good work keep it up!', 'Really enjoyed the article!', 'Very interesting!']
+USE_RELATED_TAGS = True
+ARTICLES_PER_TAG = 250
+```
 
 ## Run
-Once you have installed the required dependencies and edited the `config` file, you can run the bot.
+Once you have installed the required dependencies and edited the configuration constants, you can run the bot.
 
 Make sure you are in the correct folder and run the following command: `python MediumBot.py`
 
