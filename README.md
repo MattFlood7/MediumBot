@@ -39,6 +39,7 @@ COMMENT_ON_POSTS = True
 COMMENTS = ['Great read!', 'Good work keep it up!', 'Really enjoyed the article!', 'Very interesting!']
 USE_RELATED_TAGS = True
 ARTICLES_PER_TAG = 250
+VERBOSE = True
 ```
 
 ## Run

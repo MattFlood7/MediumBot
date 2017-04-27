@@ -17,16 +17,12 @@ COMMENT_ON_POSTS = True
 COMMENTS = ['Great read!', 'Good work keep it up!', 'Really enjoyed the article!', 'Very interesting!']
 USE_RELATED_TAGS = True
 ARTICLES_PER_TAG = 250
+VERBOSE = True
 
 def Launch():
     """
     Launch the Medium bot and ask the user what browser they want to use.
     """
-
-    # Check if the file 'visitedUsers.txt' exists, otherwise create it
-    if os.path.isfile('visitedUsers.txt') == False:
-        visitedUsersFile = open('visitedUsers.txt', 'wb')
-        visitedUsersFile.close()
 
     # Browser choice
     print 'Choose your browser:'
@@ -92,33 +88,91 @@ def SignInToService(browser):
     # Sign in
     browser.get('https://medium.com/m/signin?redirect=https%3A%2F%2Fmedium.com%2F')
 
-    signInElement = browser.find_element_by_xpath('//button[contains(text(),"Sign in or sign up with email")]')
-    signInElement.click()
-
-    emailElement = browser.find_element_by_name('email')
-    emailElement.send_keys(EMAIL)
-
     if serviceToSignWith == "google":
-
-        try:
-            browser.find_element_by_class_name('button--google').click()
-            browser.find_element_by_id("next").click()
-            time.sleep(3)
-            # Enter password
-            browser.find_element_by_id('Passwd').send_keys(PASSWORD)
-            browser.find_element_by_id('signIn').click()
-            signInCompleted = True
-        except:
-            pass
+        signInCompleted = SignInToGoogle(browser)
 
     elif serviceToSignWith == "twitter":
-        # TODO add this fun logic
-        print 'Twitter'
-    elif serviceToSignWith == "facebook":
-        # TODO add this fun logic
-        print 'Facebook'
+        signInCompleted = SignInToTwitter(browser)
 
-    time.sleep(3)
+    elif serviceToSignWith == "facebook":
+        signInCompleted = SignInToFacebook(browser)
+
+    return signInCompleted
+
+
+def SignInToGoogle(browser):
+    """
+    Sign into Medium using a Google account.
+    browser: selenium driver used to interact with the page.
+    return: true if successfully logged in : false if login failed.
+    """
+
+    signInCompleted = False
+
+    try:
+        browser.find_element_by_xpath('//button[contains(text(),"Sign in or sign up with email")]').click()
+        browser.find_element_by_name('email').send_keys(EMAIL)
+        browser.find_element_by_class_name('button--google').click()
+        browser.find_element_by_id("next").click()
+        time.sleep(3)
+        browser.find_element_by_id('Passwd').send_keys(PASSWORD)
+        browser.find_element_by_id('signIn').click()
+        time.sleep(3)
+        signInCompleted = True
+    except:
+        print "Problem logging into Medium with Google."
+        pass
+
+    return signInCompleted
+
+
+def SignInToTwitter(browser):
+    """
+    Sign into Medium using a Twitter account.
+    browser: selenium driver used to interact with the page.
+    return: true if successfully logged in : false if login failed.
+    """
+
+    signInCompleted = False
+    try:
+        browser.find_element_by_class_name('button--twitter').click()
+
+        if not browser.find_element_by_xpath('//input[@id="username_or_email"]').is_displayed():
+            browser.find_element_by_xpath('//input[@id="allow"]').click()
+            time.sleep(3)
+            signInCompleted = True
+
+        else:
+            browser.find_element_by_xpath('//input[@id="username_or_email"]').send_keys(EMAIL)
+            browser.find_element_by_xpath('//input[@id="password"]').send_keys(PASSWORD)
+            browser.find_element_by_xpath('//input[@id="allow"]').click()
+            time.sleep(3)
+            signInCompleted = True
+    except:
+        print "Problem logging into Medium with Twitter."
+        pass
+
+    return signInCompleted
+
+
+def SignInToFacebook(browser):
+    """
+    Sign into Medium using a Facebook account.
+    browser: selenium driver used to interact with the page.
+    return: true if successfully logged in : false if login failed.
+    """
+
+    signInCompleted = False
+    try:
+        browser.find_element_by_class_name('button--facebook').click()
+        browser.find_element_by_xpath('//input[@id="email"]').send_keys(EMAIL)
+        browser.find_element_by_xpath('//input[@id="pass"]').send_keys(PASSWORD)
+        browser.find_element_by_xpath('//button[@id="loginbutton"]').click()
+        time.sleep(3)
+        signInCompleted = True
+    except:
+        print "Problem logging into Medium with Facebook."
+        pass
 
     return signInCompleted
 
@@ -171,9 +225,12 @@ def ScrapeUsersFavoriteTagsUrls(browser):
     try:
         for ul in soup.find_all('ul', class_='tags--postTags'):
             for li in ul.find_all('li'):
+
                 a = li.find('a')
                 tagURLS.append(a['href'])
-                print a['href']
+
+                if VERBOSE:
+                    print a['href']
     except:
         print 'Exception thrown in ScrapeUsersFavoriteTagsUrls()'
         pass
@@ -201,10 +258,14 @@ def NavigateToURLAndScrapeRelatedTags(browser, tagURL):
         try:
             for ul in soup.find_all('ul', class_='tags--postTags'):
                 for li in ul.find_all('li'):
+
                     a = li.find('a')
+
                     if 'followed' not in a['href']:
                         tagURLS.append(a['href'])
-                        print a['href']
+
+                        if VERBOSE:
+                            print a['href']
         except:
             print 'Exception thrown in NavigateToURLAndScrapeRelatedTags()'
             pass
@@ -232,7 +293,8 @@ def ScrapeArticlesOffTagPage(browser):
     try:
         for a in browser.find_elements_by_xpath(('//div[@class="postArticle postArticle--short '
         'js-postArticle js-trackedPost"]/div[2]/a')):
-            print a.get_attribute("href")
+            if VERBOSE:
+                print a.get_attribute("href")
             articleURLS.append(a.get_attribute("href"))
     except:
         print 'Exception thrown in ScrapeArticlesOffTagPage()'
@@ -261,11 +323,12 @@ def LikeAndCommentOnPost(browser, articleURL):
 
             if likeButton.is_displayed() and buttonStatus == "upvote":
                 if int(numLikesElement.text) < MAX_LIKES_ON_POST:
-                    print 'Liking the article : \"'+browser.title+'\"'
+                    if VERBOSE:
+                        print 'Liking the article : \"'+browser.title+'\"'
                     likeButton.click()
-                else:
+                elif VERBOSE:
                     print 'Article \"'+browser.title+'\" has more likes than your threshold.'
-            else :
+            elif VERBOSE:
                 print 'Article \"'+browser.title+'\" is already liked.'
 
         except:
@@ -286,12 +349,13 @@ def LikeAndCommentOnPost(browser, articleURL):
         #TODO Find method to comment when the article is not hosted on medium.com currently
         #     found issues with the logic below when not on medium.com.
         if 'medium.com' in browser.current_url:
-            if alreadyCommented == False:
+            if not alreadyCommented:
 
                 comment = random.choice(COMMENTS)
 
                 try:
-                    print 'Commenting \"'+comment+'\" on the article : \"'+browser.title+'\"'
+                    if VERBOSE:
+                        print 'Commenting \"'+comment+'\" on the article : \"'+browser.title+'\"'
                     commentButton = browser.find_element_by_xpath('//button[@data-action="respond"]')
                     commentButton.click()
                     time.sleep(5)
@@ -302,9 +366,9 @@ def LikeAndCommentOnPost(browser, articleURL):
                 except:
                     print 'Exception thrown when trying to comment on the article: '+browser.title
                     pass
-            else:
+            elif VERBOSE:
                 print 'We have already commented on this article: '+browser.title
-        else:
+        elif VERBOSE:
             print 'Cannot comment on an article that is not hosted on Medium.com'
 
     print ''
