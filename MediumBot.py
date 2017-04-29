@@ -316,62 +316,79 @@ def LikeAndCommentOnPost(browser, articleURL):
     ScrollToBottomAndWaitForLoad(browser)
 
     if LIKE_POSTS:
-        try:
-            likeButton = browser.find_element_by_xpath(likeButtonXPath)
-            numLikesElement = browser.find_element_by_xpath(likeButtonXPath+"/following-sibling::button")
-            buttonStatus = likeButton.get_attribute("data-action")
-
-            if likeButton.is_displayed() and buttonStatus == "upvote":
-                if int(numLikesElement.text) < MAX_LIKES_ON_POST:
-                    if VERBOSE:
-                        print 'Liking the article : \"'+browser.title+'\"'
-                    likeButton.click()
-                elif VERBOSE:
-                    print 'Article \"'+browser.title+'\" has more likes than your threshold.'
-            elif VERBOSE:
-                print 'Article \"'+browser.title+'\" is already liked.'
-
-        except:
-            print 'Exception thrown when trying to like the article: '+browser.title
-            pass
+        LikeArticle(browser)
 
     if COMMENT_ON_POSTS:
-
-        # Determine if the account has already commented on the post.
-        usersName = browser.find_element_by_xpath('//div[@class="avatar"]/img').get_attribute("alt")
-        alreadyCommented = False
-
-        try:
-            alreadyCommented = browser.find_element_by_xpath('//a[text()[contains(.,"'+usersName+'")]]').is_displayed()
-        except:
-            pass
-
-        #TODO Find method to comment when the article is not hosted on medium.com currently
-        #     found issues with the logic below when not on medium.com.
-        if 'medium.com' in browser.current_url:
-            if not alreadyCommented:
-
-                comment = random.choice(COMMENTS)
-
-                try:
-                    if VERBOSE:
-                        print 'Commenting \"'+comment+'\" on the article : \"'+browser.title+'\"'
-                    commentButton = browser.find_element_by_xpath('//button[@data-action="respond"]')
-                    commentButton.click()
-                    time.sleep(5)
-                    browser.find_element_by_xpath('//div[@role="textbox"]').send_keys(comment)
-                    time.sleep(20)
-                    browser.find_element_by_xpath('//button[@data-action="publish"]').click()
-                    time.sleep(5)
-                except:
-                    print 'Exception thrown when trying to comment on the article: '+browser.title
-                    pass
-            elif VERBOSE:
-                print 'We have already commented on this article: '+browser.title
-        elif VERBOSE:
-            print 'Cannot comment on an article that is not hosted on Medium.com'
+        CommentOnArticle(browser)
 
     print ''
+
+
+def LikeArticle(browser):
+    """
+    Like the article that has already been navigated to.
+    browser: selenium driver used to interact with the page.
+    """
+
+    try:
+        likeButton = browser.find_element_by_xpath(likeButtonXPath)
+        numLikesElement = browser.find_element_by_xpath(likeButtonXPath+"/following-sibling::button")
+        buttonStatus = likeButton.get_attribute("data-action")
+
+        if likeButton.is_displayed() and buttonStatus == "upvote":
+            if int(numLikesElement.text) < MAX_LIKES_ON_POST:
+                if VERBOSE:
+                    print 'Liking the article : \"'+browser.title+'\"'
+                likeButton.click()
+            elif VERBOSE:
+                print 'Article \"'+browser.title+'\" has more likes than your threshold.'
+        elif VERBOSE:
+            print 'Article \"'+browser.title+'\" is already liked.'
+
+    except:
+        print 'Exception thrown when trying to like the article: '+browser.title
+        pass
+
+
+def CommentOnArticle(browser):
+    """
+    Comment on the article that has already been navigated to.
+    browser: selenium driver used to interact with the page.
+    """
+
+    # Determine if the account has already commented on the post.
+    usersName = browser.find_element_by_xpath('//div[@class="avatar"]/img').get_attribute("alt")
+    alreadyCommented = False
+
+    try:
+        alreadyCommented = browser.find_element_by_xpath('//a[text()[contains(.,"'+usersName+'")]]').is_displayed()
+    except:
+        pass
+
+    #TODO Find method to comment when the article is not hosted on medium.com currently
+    #     found issues with the logic below when not on medium.com.
+    if 'medium.com' in browser.current_url:
+        if not alreadyCommented:
+
+            comment = random.choice(COMMENTS)
+
+            try:
+                if VERBOSE:
+                    print 'Commenting \"'+comment+'\" on the article : \"'+browser.title+'\"'
+                commentButton = browser.find_element_by_xpath('//button[@data-action="respond"]')
+                commentButton.click()
+                time.sleep(5)
+                browser.find_element_by_xpath('//div[@role="textbox"]').send_keys(comment)
+                time.sleep(20)
+                browser.find_element_by_xpath('//button[@data-action="publish"]').click()
+                time.sleep(5)
+            except:
+                print 'Exception thrown when trying to comment on the article: '+browser.title
+                pass
+        elif VERBOSE:
+            print 'We have already commented on this article: '+browser.title
+    elif VERBOSE:
+        print 'Cannot comment on an article that is not hosted on Medium.com'
 
 
 def ScrollToBottomAndWaitForLoad(browser):
