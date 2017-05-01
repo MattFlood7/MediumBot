@@ -70,6 +70,8 @@ def StartBrowser(browserChoice):
             print 'Error! Please verify your username and password.'
         elif browser.title == '403: Forbidden':
             print 'Medium is momentarily unavailable. Please wait a moment, then try again.'
+        else:
+            print 'Please make sure your config is set up correctly.'
 
     browser.quit()
 
@@ -113,15 +115,26 @@ def SignInToGoogle(browser):
         browser.find_element_by_xpath('//button[contains(text(),"Sign in or sign up with email")]').click()
         browser.find_element_by_name('email').send_keys(EMAIL)
         browser.find_element_by_class_name('button--google').click()
-        browser.find_element_by_id("identifierNext").click()
+        browser.find_element_by_id("next").click()
         time.sleep(3)
-        browser.find_element_by_name('password').send_keys(PASSWORD)
-        browser.find_element_by_id('passwordNext').click()
+        browser.find_element_by_id('Passwd').send_keys(PASSWORD)
+        browser.find_element_by_id('signIn').click()
         time.sleep(3)
         signInCompleted = True
     except:
-        print "Problem logging into Medium with Google."
         pass
+
+    if not signInCompleted:
+        try:
+            browser.find_element_by_id("identifierNext").click()
+            time.sleep(3)
+            browser.find_element_by_name('password').send_keys(PASSWORD)
+            browser.find_element_by_id('passwordNext').click()
+            time.sleep(3)
+            signInCompleted = True
+        except:
+            print "Problem logging into Medium with Google."
+            pass
 
     return signInCompleted
 
@@ -187,9 +200,13 @@ def MediumBot(browser):
 
     # TODO clean this up, add improved logic to get rid of the pop overs that are giving selenium a hard time getting tag urls
     browser.refresh()
+    time.sleep(5)
     browser.refresh()
+    time.sleep(5)
     browser.refresh()
+    time.sleep(5)
     browser.refresh()
+    time.sleep(5)
 
     # Infinite loop
     while True:
@@ -317,7 +334,6 @@ def LikeAndCommentOnPost(browser, articleURL):
     articleURL: the url of the article to navigate to and like and/or comment
     """
 
-    likeButtonXPath = '//div[@data-source="post_actions_footer"]/button'
     browser.get(articleURL)
     ScrollToBottomAndWaitForLoad(browser)
 
@@ -336,13 +352,21 @@ def LikeArticle(browser):
     browser: selenium driver used to interact with the page.
     """
 
+    likeButtonXPath = '//div[@data-source="post_actions_footer"]/button'
+    numLikes = 0
+
+    try:
+        numLikesElement = browser.find_element_by_xpath(likeButtonXPath+"/following-sibling::button")
+        numLikes = int(numLikesElement.text)
+    except:
+        pass
+
     try:
         likeButton = browser.find_element_by_xpath(likeButtonXPath)
-        numLikesElement = browser.find_element_by_xpath(likeButtonXPath+"/following-sibling::button")
         buttonStatus = likeButton.get_attribute("data-action")
 
         if likeButton.is_displayed() and buttonStatus == "upvote":
-            if int(numLikesElement.text) < MAX_LIKES_ON_POST:
+            if numLikes < MAX_LIKES_ON_POST:
                 if VERBOSE:
                     print 'Liking the article : \"'+browser.title+'\"'
                 likeButton.click()
