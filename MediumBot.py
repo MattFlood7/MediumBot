@@ -13,7 +13,7 @@ PASSWORD = 'password'
 LOGIN_SERVICE = 'Google, Twitter, or Facebook'
 LIKE_POSTS = True
 MAX_LIKES_ON_POST = 50 # only like posts with less than X posts.
-COMMENT_ON_POSTS = True
+COMMENT_ON_POSTS = False
 COMMENTS = ['Great read!', 'Good work keep it up!', 'Really enjoyed the article!', 'Very interesting!']
 USE_RELATED_TAGS = True
 ARTICLES_PER_TAG = 250
@@ -113,10 +113,10 @@ def SignInToGoogle(browser):
         browser.find_element_by_xpath('//button[contains(text(),"Sign in or sign up with email")]').click()
         browser.find_element_by_name('email').send_keys(EMAIL)
         browser.find_element_by_class_name('button--google').click()
-        browser.find_element_by_id("next").click()
+        browser.find_element_by_id("identifierNext").click()
         time.sleep(3)
-        browser.find_element_by_id('Passwd').send_keys(PASSWORD)
-        browser.find_element_by_id('signIn').click()
+        browser.find_element_by_name('password').send_keys(PASSWORD)
+        browser.find_element_by_id('passwordNext').click()
         time.sleep(3)
         signInCompleted = True
     except:
@@ -184,6 +184,12 @@ def MediumBot(browser):
     """
 
     tagURLsQueued = []
+
+    # TODO clean this up, add improved logic to get rid of the pop overs that are giving selenium a hard time getting tag urls
+    browser.refresh()
+    browser.refresh()
+    browser.refresh()
+    browser.refresh()
 
     # Infinite loop
     while True:
@@ -346,7 +352,7 @@ def LikeArticle(browser):
             print 'Article \"'+browser.title+'\" is already liked.'
 
     except:
-        print 'Exception thrown when trying to like the article: '+browser.title
+        print 'Exception thrown when trying to like the article: '+browser.current_url
         pass
 
 
@@ -383,7 +389,7 @@ def CommentOnArticle(browser):
                 browser.find_element_by_xpath('//button[@data-action="publish"]').click()
                 time.sleep(5)
             except:
-                print 'Exception thrown when trying to comment on the article: '+browser.title
+                print 'Exception thrown when trying to comment on the article: '+browser.current_url
                 pass
         elif VERBOSE:
             print 'We have already commented on this article: '+browser.title
