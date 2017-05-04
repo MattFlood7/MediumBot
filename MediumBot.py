@@ -14,9 +14,14 @@ LOGIN_SERVICE = 'Google, Twitter, or Facebook'
 LIKE_POSTS = True
 RANDOMIZE_LIKING_POSTS = True
 MAX_LIKES_ON_POST = 50 # only like posts with less than X posts.
-COMMENT_ON_POSTS = True
+COMMENT_ON_POSTS = False
 RANDOMIZE_COMMENTING_ON_POSTS = True
 COMMENTS = ['Great read!', 'Good work keep it up!', 'Really enjoyed the content!', 'Very interesting!']
+FOLLOW_USERS = False
+RANDOMIZE_FOLLOWING_USERS = True
+UNFOLLOW_USERS = False
+RANDOMIZE_UNFOLLOWING_USERS = False
+UNFOLLOW_USERS_BLACK_LIST = ['DontUnFollowMe']
 USE_RELATED_TAGS = True
 ARTICLES_PER_TAG = 250
 VERBOSE = True
@@ -230,7 +235,13 @@ def MediumBot(browser):
 
                 print "Tags in Queue: "+str(len(tagURLsQueued))+" Articles in Queue: "+str(len(articleURLsQueued))
                 articleURL = articleURLsQueued.pop()
-                LikeAndCommentOnPost(browser, articleURL)
+                LikeCommentAndFollowOnPost(browser, articleURL)
+
+                if UNFOLLOW_USERS:
+                    if not RANDOMIZE_UNFOLLOWING_USERS:
+                        UnFollowUser(browser)
+                    elif random.choice([True, False]):
+                        UnFollowUser(browser)
 
         print '\nPause for 1 hour to wait for new articles to be posted\n'
         time.sleep(3600+(random.randrange(0, 10))*60)
@@ -257,7 +268,8 @@ def ScrapeUsersFavoriteTagsUrls(browser):
                 if VERBOSE:
                     print a['href']
     except:
-        print 'Exception thrown in ScrapeUsersFavoriteTagsUrls()'
+        if VERBOSE:
+            print 'Exception thrown in ScrapeUsersFavoriteTagsUrls()'
         pass
     print ''
 
@@ -329,14 +341,21 @@ def ScrapeArticlesOffTagPage(browser):
     return articleURLS
 
 
-def LikeAndCommentOnPost(browser, articleURL):
+def LikeCommentAndFollowOnPost(browser, articleURL):
     """
-    Like and/or comment on the post that has been navigated to.
+    Like, comment, and/or follow the author of the post that has been navigated to.
     browser: selenium browser used to find the like button and click it.
     articleURL: the url of the article to navigate to and like and/or comment
     """
 
     browser.get(articleURL)
+
+    if FOLLOW_USERS:
+        if not RANDOMIZE_FOLLOWING_USERS:
+            FollowUser(browser)
+        elif random.choice([True, False]):
+            FollowUser(browser)
+
     ScrollToBottomAndWaitForLoad(browser)
 
     if LIKE_POSTS:
@@ -384,7 +403,8 @@ def LikeArticle(browser):
             print 'Article \"'+browser.title+'\" is already liked.'
 
     except:
-        print 'Exception thrown when trying to like the article: '+browser.current_url
+        if VERBOSE:
+            print 'Exception thrown when trying to like the article: '+browser.current_url
         pass
 
 
@@ -421,12 +441,64 @@ def CommentOnArticle(browser):
                 browser.find_element_by_xpath('//button[@data-action="publish"]').click()
                 time.sleep(5)
             except:
-                print 'Exception thrown when trying to comment on the article: '+browser.current_url
+                if VERBOSE:
+                    print 'Exception thrown when trying to comment on the article: '+browser.current_url
                 pass
         elif VERBOSE:
             print 'We have already commented on this article: '+browser.title
     elif VERBOSE:
         print 'Cannot comment on an article that is not hosted on Medium.com'
+
+
+def FollowUser(browser):
+    """
+    Follow the user whose article you have already currently navigated to.
+    browser: selenium webdriver used to interact with the browser.
+    """
+
+    try:
+        print 'Following the user: '+browser.find_element_by_xpath('//a[@rel="author cc:attributionUrl"]').text
+        print ''
+        browser.find_element_by_xpath('//button[@data-action="toggle-subscribe-user"]').click()
+    except:
+        if VERBOSE:
+            print 'Exception thrown when trying to follow the user.'
+        pass
+
+
+def UnFollowUser(browser):
+    """
+    UnFollow a just from your followed user list.
+    browser: selenium webdriver used to interact with the browser.
+    Note: view the black list of users you do not want to unfollow.
+    """
+
+    browser.get('https://medium.com/')
+
+    try:
+        browser.find_element_by_xpath('//div[@class="avatar"]/img').click()
+        time.sleep(3)
+        profileUrl = browser.find_element_by_xpath('//a[contains(text(),"Profile")]').get_attribute("href")+'/following'
+        browser.get(profileUrl)
+        time.sleep(3)
+        followedUsers = browser.find_elements_by_xpath('//a[@data-action="show-user-card"]')
+        random.shuffle(followedUsers)
+
+        for followedUser in followedUsers:
+            followedUserUrl = followedUser.get_attribute("href")
+            if not any(blackListUser in followedUserUrl for blackListUser in UNFOLLOW_USERS_BLACK_LIST):
+                browser.get(followedUserUrl)
+                break
+
+        time.sleep(3)
+        print 'UnFollow the user: '+browser.find_element_by_xpath('//h1[@class="hero-title"]').text
+        print ''
+        browser.find_element_by_xpath('//button[@data-action="toggle-subscribe-user"]').click()
+
+    except:
+        if VERBOSE:
+            print 'Exception thrown when trying to unfollow a user.'
+        pass
 
 
 def ScrollToBottomAndWaitForLoad(browser):
