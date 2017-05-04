@@ -12,9 +12,11 @@ EMAIL = 'youremail@gmail.com'
 PASSWORD = 'password'
 LOGIN_SERVICE = 'Google, Twitter, or Facebook'
 LIKE_POSTS = True
+RANDOMIZE_LIKING_POSTS = True
 MAX_LIKES_ON_POST = 50 # only like posts with less than X posts.
-COMMENT_ON_POSTS = False
-COMMENTS = ['Great read!', 'Good work keep it up!', 'Really enjoyed the article!', 'Very interesting!']
+COMMENT_ON_POSTS = True
+RANDOMIZE_COMMENTING_ON_POSTS = True
+COMMENTS = ['Great read!', 'Good work keep it up!', 'Really enjoyed the content!', 'Very interesting!']
 USE_RELATED_TAGS = True
 ARTICLES_PER_TAG = 250
 VERBOSE = True
@@ -338,10 +340,16 @@ def LikeAndCommentOnPost(browser, articleURL):
     ScrollToBottomAndWaitForLoad(browser)
 
     if LIKE_POSTS:
-        LikeArticle(browser)
+        if not RANDOMIZE_LIKING_POSTS:
+            LikeArticle(browser)
+        elif random.choice([True, False]):
+            LikeArticle(browser)
 
     if COMMENT_ON_POSTS:
-        CommentOnArticle(browser)
+        if not RANDOMIZE_COMMENTING_ON_POSTS:
+            CommentOnArticle(browser)
+        elif random.choice([True, False]):
+            CommentOnArticle(browser)
 
     print ''
 
