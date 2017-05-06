@@ -204,6 +204,8 @@ def MediumBot(browser):
     """
 
     tagURLsQueued = []
+    tagURLsVisitedThisLoop = []
+    articleURLsVisited = []
 
     # TODO clean this up, add improved logic to get rid of the pop overs that are giving selenium a hard time getting tag urls
     browser.refresh()
@@ -225,16 +227,22 @@ def MediumBot(browser):
             articleURLsQueued = []
             shuffle(tagURLsQueued)
             tagURL = tagURLsQueued.pop()
+            tagURLsVisitedThisLoop.extend(tagURL)
 
             # Note: This is dones this way to add some timing between liking and
             # commenting on posts to throw any bot finder logic off
-            tagURLsQueued.append(NavigateToURLAndScrapeRelatedTags(browser, tagURL))
-            articleURLsQueued = ScrapeArticlesOffTagPage(browser)
+            tagURLsQueued.extend(NavigateToURLAndScrapeRelatedTags(browser, tagURL, tagURLsVisitedThisLoop))
+            articleURLsQueued = ScrapeArticlesOffTagPage(browser, articleURLsVisited)
 
             while articleURLsQueued:
 
+                # We don't want to max out the list so check to make sure we don't overload it in mem
+                if len(articleURLsVisited) > 530000000:
+                    articleURLsVisited = []
+
                 print "Tags in Queue: "+str(len(tagURLsQueued))+" Articles in Queue: "+str(len(articleURLsQueued))
                 articleURL = articleURLsQueued.pop()
+                articleURLsVisited.extend(articleURL)
                 LikeCommentAndFollowOnPost(browser, articleURL)
 
                 if UNFOLLOW_USERS:
@@ -244,6 +252,7 @@ def MediumBot(browser):
                         UnFollowUser(browser)
 
         print '\nPause for 1 hour to wait for new articles to be posted\n'
+        tagURLsVisitedThisLoop = [] # Reset the tags visited
         time.sleep(3600+(random.randrange(0, 10))*60)
 
 
@@ -276,19 +285,22 @@ def ScrapeUsersFavoriteTagsUrls(browser):
     return tagURLS
 
 
-def NavigateToURLAndScrapeRelatedTags(browser, tagURL):
+def NavigateToURLAndScrapeRelatedTags(browser, tagURL, tagURLsVisitedThisLoop):
     """
     Navigate to the tag url passed. If the USE_RELATED_TAGS is set scrape the
     related tags found as well.
     browser: selenium webdriver used for beautifulsoup.
     tagURL: the tag page to navigate to before scraping urls
+    tagURLsVisitedThisLoop: tags we have aready visited.
+        Don't want to waste time viewing them twice in a loop.
     return: list of other tag urls to add to navigate to and bot.
     """
 
     browser.get(tagURL)
     tagURLS = []
 
-    if USE_RELATED_TAGS:
+    if USE_RELATED_TAGS and tagURL:
+
         print 'Gathering tags related to : '+tagURL
         soup = BeautifulSoup(browser.page_source, "lxml")
 
@@ -298,7 +310,7 @@ def NavigateToURLAndScrapeRelatedTags(browser, tagURL):
 
                     a = li.find('a')
 
-                    if 'followed' not in a['href']:
+                    if 'followed' not in a['href'] and a['href'] not in tagURLsVisitedThisLoop:
                         tagURLS.append(a['href'])
 
                         if VERBOSE:
@@ -311,10 +323,11 @@ def NavigateToURLAndScrapeRelatedTags(browser, tagURL):
     return tagURLS
 
 
-def ScrapeArticlesOffTagPage(browser):
+def ScrapeArticlesOffTagPage(browser, articleURLsVisited):
     """
     Scrape articles to navigate to from the tag's url.
     browser: selenium webdriver used for beautifulsoup.
+    articleURLsVisited: articles that have been previously visited.
     return: a list of article urls
     """
 
@@ -330,9 +343,10 @@ def ScrapeArticlesOffTagPage(browser):
     try:
         for a in browser.find_elements_by_xpath(('//div[@class="postArticle postArticle--short '
         'js-postArticle js-trackedPost"]/div[2]/a')):
-            if VERBOSE:
-                print a.get_attribute("href")
-            articleURLS.append(a.get_attribute("href"))
+            if a.get_attribute("href") not in articleURLsVisited:
+                if VERBOSE:
+                    print a.get_attribute("href")
+                articleURLS.append(a.get_attribute("href"))
     except:
         print 'Exception thrown in ScrapeArticlesOffTagPage()'
         pass
