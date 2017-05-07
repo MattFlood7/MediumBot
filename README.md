@@ -57,7 +57,7 @@ Once you have installed the required dependencies and edited the configuration c
 
 Make sure you are in the correct folder and run the following command: `python MediumBot.py`
 
-Then, after choosing your favorite browser the bot will start visiting articles based on your tags and start liking and leaving comments increase your  visibility on Medium.
+Then, after choosing your favorite browser the bot will start visiting articles based on your tags and start liking and commenting articles or following and unfollowing users increase your visibility on Medium.
 
 ## Output
 ![MediumBot Demo Gif](http://g.recordit.co/j7gsUZQOJG.gif)
