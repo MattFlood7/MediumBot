@@ -42,6 +42,7 @@ MAX_LIKES_ON_POST = 50 # only like posts with less than X posts.
 COMMENT_ON_POSTS = False
 RANDOMIZE_COMMENTING_ON_POSTS = True
 COMMENTS = ['Great read!', 'Good work keep it up!', 'Really enjoyed the content!', 'Very interesting!']
+ARTICLE_BLACK_LIST = ['Sex', 'Drugs', 'Child Labor']
 FOLLOW_USERS = False
 RANDOMIZE_FOLLOWING_USERS = True
 UNFOLLOW_USERS = False

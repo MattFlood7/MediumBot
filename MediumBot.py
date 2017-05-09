@@ -17,6 +17,7 @@ MAX_LIKES_ON_POST = 50 # only like posts with less than X posts.
 COMMENT_ON_POSTS = False
 RANDOMIZE_COMMENTING_ON_POSTS = True
 COMMENTS = ['Great read!', 'Good work keep it up!', 'Really enjoyed the content!', 'Very interesting!']
+ARTICLE_BLACK_LIST = ['Sex', 'Drugs', 'Child Labor']
 FOLLOW_USERS = False
 RANDOMIZE_FOLLOWING_USERS = True
 UNFOLLOW_USERS = False
@@ -364,27 +365,29 @@ def LikeCommentAndFollowOnPost(browser, articleURL):
 
     browser.get(articleURL)
 
-    if FOLLOW_USERS:
-        if not RANDOMIZE_FOLLOWING_USERS:
-            FollowUser(browser)
-        elif random.choice([True, False]):
-            FollowUser(browser)
+    if browser.title not in ARTICLE_BLACK_LIST:
 
-    ScrollToBottomAndWaitForLoad(browser)
+        if FOLLOW_USERS:
+            if not RANDOMIZE_FOLLOWING_USERS:
+                FollowUser(browser)
+            elif random.choice([True, False]):
+                FollowUser(browser)
 
-    if LIKE_POSTS:
-        if not RANDOMIZE_LIKING_POSTS:
-            LikeArticle(browser)
-        elif random.choice([True, False]):
-            LikeArticle(browser)
+        ScrollToBottomAndWaitForLoad(browser)
 
-    if COMMENT_ON_POSTS:
-        if not RANDOMIZE_COMMENTING_ON_POSTS:
-            CommentOnArticle(browser)
-        elif random.choice([True, False]):
-            CommentOnArticle(browser)
+        if LIKE_POSTS:
+            if not RANDOMIZE_LIKING_POSTS:
+                LikeArticle(browser)
+            elif random.choice([True, False]):
+                LikeArticle(browser)
 
-    print ''
+        if COMMENT_ON_POSTS:
+            if not RANDOMIZE_COMMENTING_ON_POSTS:
+                CommentOnArticle(browser)
+            elif random.choice([True, False]):
+                CommentOnArticle(browser)
+
+        print ''
 
 
 def LikeArticle(browser):
