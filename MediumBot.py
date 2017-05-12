@@ -208,15 +208,10 @@ def MediumBot(browser):
     tagURLsVisitedThisLoop = []
     articleURLsVisited = []
 
-    # TODO clean this up, add improved logic to get rid of the pop overs that are giving selenium a hard time getting tag urls
-    browser.refresh()
-    time.sleep(5)
-    browser.refresh()
-    time.sleep(5)
-    browser.refresh()
-    time.sleep(5)
-    browser.refresh()
-    time.sleep(5)
+    # Get rid of any surpise pop ups on the landing page
+    for counter in range(0,5):
+        browser.refresh()
+        time.sleep(5)
 
     # Infinite loop
     while True:
