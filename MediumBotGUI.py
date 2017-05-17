@@ -10,9 +10,12 @@ Note: this is a starting point for the GUI and is not finished.
 from Tkinter import Tk, Text, BOTH, W, N, E, S
 from ttk import Frame, Button, Label, Style
 
-class Example(Frame):
+class MediumBotGUI(Frame):
 
     def __init__(self, parent):
+        """
+        Initilaize the MediumBotGUI object.
+        """
         Frame.__init__(self, parent)
 
         self.parent = parent
@@ -20,6 +23,9 @@ class Example(Frame):
 
 
     def initUI(self):
+        """
+        Initialize the user interface.
+        """
 
         self.parent.title("Windows")
         self.pack(fill=BOTH, expand=True)
@@ -45,7 +51,7 @@ class Example(Frame):
         hbtn = Button(self, text="Help")
         hbtn.grid(row=5, column=0, padx=5)
 
-        obtn = Button(self, text="OK")
+        obtn = Button(self, text="Start")
         obtn.grid(row=5, column=3)
 
 
