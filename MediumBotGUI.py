@@ -27,6 +27,9 @@ class MediumBotGUI(Frame):
         Initialize the user interface.
         """
 
+        mediumBotVariables = parseMediumBot()
+
+        service = IntVar()
         likePosts = IntVar()
         randomizeLikes = IntVar()
         commentOnPosts = IntVar()
@@ -40,7 +43,6 @@ class MediumBotGUI(Frame):
 
         self.parent.title("Medium Bot")
         self.pack(fill=BOTH, expand=True)
-
         self.columnconfigure(1, weight=1)
         self.columnconfigure(3, pad=7)
         self.rowconfigure(3, weight=1)
@@ -48,95 +50,126 @@ class MediumBotGUI(Frame):
 
         emailLabel = Label(self, text="Email: ")
         emailLabel.grid(sticky=W, pady=4, padx=5)
-        emailTextField = Entry(self)
-        emailTextField.grid(row=0, column=1)
+        emailTextField = Entry(self, width = 100)
+        emailTextField.grid(row=0, column=1, columnspan = 3)
+        emailTextField.insert(10, mediumBotVariables["EMAIL"])
 
         passwordLabel = Label(self, text="Password: ")
         passwordLabel.grid(sticky=W, pady=4, padx=5)
-        passwordField = Entry(self)
-        passwordField.grid(row=1, column=1)
+        passwordField = Entry(self, show="*", width = 100)
+        passwordField.grid(row=1, column=1, columnspan = 3)
+        passwordField.insert(10, mediumBotVariables["PASSWORD"])
 
         serviceLabel = Label(self, text="Service: ")
         serviceLabel.grid(sticky=W, pady=4, padx=5)
-        #serviceField = Entry(self)
-        #serviceField.grid(row=2, column=1)
-        Radiobutton(self, text="Google", variable=1, value=0).grid(row=2, column = 1)
-        Radiobutton(self, text="FaceBook", variable=2, value=0).grid(row=2, column = 2)
-        Radiobutton(self, text="Twitter", variable=3, value=0).grid(row=2, column = 3)
+        serviceDropDown = Combobox(self, values=["Google", "Facebook", "Twitter"], width = 100)
+        serviceDropDown.grid(row=2, column=1, columnspan = 3)
 
         likePostsLabel = Label(self, text="Like Posts: ")
         likePostsLabel.grid(sticky=W, pady=4, padx=5)
-        Checkbutton(self, text="", variable=likePosts).grid(row=3, column = 1)
+        Checkbutton(self, text="", variable=likePosts).grid(row=3, column = 1, columnspan = 3)
 
         randomizeLikesLabel = Label(self, text="Randomize Likes: ")
         randomizeLikesLabel.grid(sticky=W, pady=4, padx=5)
-        Checkbutton(self, text="", variable=randomizeLikes).grid(row=4, column = 1)
+        Checkbutton(self, text="", variable=randomizeLikes).grid(row=4, column = 1, columnspan = 3)
 
         maxLikesLabel = Label(self, text="Max Likes On Posts: ")
         maxLikesLabel.grid(sticky=W, pady=4, padx=5)
-        maxLikesField = Entry(self)
-        maxLikesField.grid(row=5, column=1)
+        maxLikesField = Entry(self, width = 100)
+        maxLikesField.grid(row=5, column=1, columnspan = 3)
+        maxLikesField.insert(10, mediumBotVariables["MAX_LIKES_ON_POST"])
 
         commentPostsLabel = Label(self, text="Comment On Posts: ")
         commentPostsLabel.grid(sticky=W, pady=4, padx=5)
-        Checkbutton(self, text="", variable=commentOnPosts).grid(row=6, column = 1)
+        Checkbutton(self, text="", variable=commentOnPosts).grid(row=6, column = 1, columnspan = 3)
 
         randomizeCommentsLabel = Label(self, text="Randomize Comments: ")
         randomizeCommentsLabel.grid(sticky=W, pady=4, padx=5)
-        Checkbutton(self, text="", variable=randomizeComments).grid(row=7, column = 1)
+        Checkbutton(self, text="", variable=randomizeComments).grid(row=7, column = 1, columnspan = 3)
 
         commentsLabel = Label(self, text="Comments: ")
         commentsLabel.grid(sticky=W, pady=4, padx=5)
-        commentsField = Entry(self)
-        commentsField.grid(row=8, column=1)
+        commentsField = Entry(self, width = 100)
+        commentsField.grid(row=8, column=1, columnspan = 3)
+        commentsField.insert(10, mediumBotVariables["COMMENTS"])
 
         articleBlackListLabel = Label(self, text="Article Black List: ")
         articleBlackListLabel.grid(sticky=W, pady=4, padx=5)
-        articleBlackListField = Entry(self)
-        articleBlackListField.grid(row=9, column=1)
+        articleBlackListField = Entry(self, width = 100)
+        articleBlackListField.grid(row=9, column=1, columnspan = 3)
+        articleBlackListField.insert(10, mediumBotVariables["ARTICLE_BLACK_LIST"])
 
         followUsersLabel = Label(self, text="Follow Users: ")
         followUsersLabel.grid(sticky=W, pady=4, padx=5)
-        Checkbutton(self, text="", variable=followUsers).grid(row=10, column = 1)
+        Checkbutton(self, text="", variable=followUsers).grid(row=10, column = 1, columnspan = 3)
 
         randomizeFollowingLabel = Label(self, text="Randomize Following: ")
         randomizeFollowingLabel.grid(sticky=W, pady=4, padx=5)
-        Checkbutton(self, text="", variable=randomizeFollowingUsers).grid(row=11, column = 1)
+        Checkbutton(self, text="", variable=randomizeFollowingUsers).grid(row=11, column = 1, columnspan = 3)
 
         unfollowUsersLabel = Label(self, text="Unfollow Users: ")
         unfollowUsersLabel.grid(sticky=W, pady=4, padx=5)
-        Checkbutton(self, text="", variable=unfollowUsers).grid(row=12, column = 1)
+        Checkbutton(self, text="", variable=unfollowUsers).grid(row=12, column = 1, columnspan = 3)
 
         randomizeUnfollowingLabel = Label(self, text="Randomize Unfollowing: ")
         randomizeUnfollowingLabel.grid(sticky=W, pady=4, padx=5)
-        Checkbutton(self, text="", variable=randomizeUnfollowingUsers).grid(row=13, column = 1)
+        Checkbutton(self, text="", variable=randomizeUnfollowingUsers).grid(row=13, column = 1, columnspan = 3)
 
         unfollowBlackListLabel = Label(self, text="Unfollow Black List: ")
         unfollowBlackListLabel.grid(sticky=W, pady=4, padx=5)
-        unfollowBlackListField = Entry(self)
-        unfollowBlackListField.grid(row=14, column=1)
+        unfollowBlackListField = Entry(self, width = 100)
+        unfollowBlackListField.grid(row=14, column=1, columnspan = 3)
+        unfollowBlackListField.insert(10, mediumBotVariables["UNFOLLOW_USERS_BLACK_LIST"])
 
         useRelatedTagsLabel = Label(self, text="Use Related Tags: ")
         useRelatedTagsLabel.grid(sticky=W, pady=4, padx=5)
-        Checkbutton(self, text="", variable=useRelatedTags).grid(row=15, column = 1)
+        Checkbutton(self, text="", variable=useRelatedTags).grid(row=15, column = 1, columnspan = 3)
 
         articlesPerTagLabel = Label(self, text="Articles Per Tag: ")
         articlesPerTagLabel.grid(sticky=W, pady=4, padx=5)
-        articlesPerTagField = Entry(self)
-        articlesPerTagField.grid(row=16, column=1)
+        articlesPerTagField = Entry(self, width = 100)
+        articlesPerTagField.grid(row=16, column=1, columnspan = 3)
 
         verboseLabel = Label(self, text="Verbose Output: ")
         verboseLabel.grid(sticky=W, pady=4, padx=5)
-        Checkbutton(self, text="", variable=verbose).grid(row=17, column = 1)
-
-        #area = Text(self)
-        #area.grid(row=1, column=0, columnspan=2, rowspan=4, padx=5, sticky=E+W+S+N)
+        Checkbutton(self, text="", variable=verbose).grid(row=17, column = 1, columnspan = 3)
 
         obtn = Button(self, text="Start Bot")
         obtn.grid(row=20, column=3)
 
 
+def parseMediumBot():
+    """
+    Get the user's current set values in MediumBot.py to display in the fields.
+    """
+
+    lines = [line.rstrip('\n') for line in open('MediumBot.py')]
+    charsToRemove = ["'", "[", "]", '"']
+    mediumBotVariables = {}
+    atStartOfVariables = False
+
+    for line in lines:
+
+        if not atStartOfVariables and "=" in line:
+            atStartOfVariables = True
+        elif atStartOfVariables and "=" not in line:
+            break
+
+        if atStartOfVariables:
+
+            mediumBotVar = line.split(" = ")
+            for charToRemove in charsToRemove:
+                mediumBotVar[1] = mediumBotVar[1].replace(charToRemove,"")
+
+            mediumBotVariables[mediumBotVar[0]] = mediumBotVar[1]
+
+    return mediumBotVariables
+
+
 def main():
+    """
+    Set the gui's window size, initialize and launch
+    """
 
     root = Tk()
     root.geometry("500x550+300+300")
