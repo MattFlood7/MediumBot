@@ -9,6 +9,11 @@ Note: this is a starting point for the GUI and is not finished.
 
 from Tkinter import *
 from ttk import *
+from tempfile import mkstemp
+from shutil import move
+from os import remove, close
+
+FILE_PATH = "MediumBot.py"
 
 class MediumBotGUI(Frame):
 
@@ -143,7 +148,7 @@ def parseMediumBot():
     Get the user's current set values in MediumBot.py to display in the fields.
     """
 
-    lines = [line.rstrip('\n') for line in open('MediumBot.py')]
+    lines = [line.rstrip('\n') for line in open(FILE_PATH)]
     charsToRemove = ["'", "[", "]", '"']
     mediumBotVariables = {}
     atStartOfVariables = False
@@ -164,6 +169,37 @@ def parseMediumBot():
             mediumBotVariables[mediumBotVar[0]] = mediumBotVar[1]
 
     return mediumBotVariables
+
+
+def updateMediumBot():
+    """
+    Update the MediumBot with the values in the GUI. Called when the start buttton
+    is clicked.
+    """
+
+    print "TODO"
+
+def updateMediumBotVariable(variableToUpdate, value):
+    """
+    Update a variable in the MediumBot.py file.
+    variableToUpdate: the variable that is being update in MediumBot.py.
+    value: value to update the variable in MediumBot.py to.
+    """
+
+    fh, abs_path = mkstemp()
+    with open(abs_path,'w') as newFile:
+
+        with open(FILE_PATH) as oldFile:
+
+            for line in oldFile:
+                if variableToUpdate in line and " = " in line and "if" not in line and "elif" not in line:
+                    newFile.write(variableToUpdate+" = "+value)
+                else:
+                    newFile.write(line)
+
+    close(fh)
+    remove(FILE_PATH)
+    move(abs_path, FILE_PATH)
 
 
 def main():
