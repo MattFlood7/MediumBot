@@ -171,9 +171,8 @@ class MediumBotGUI(Frame):
 
         if self.validateFieldValues():
             self.updateMediumBot()
-            os.system("python "+FILE_PATH)
             self.parent.destroy()
-            # TODO launch bot and close gui
+            os.system("python "+FILE_PATH)
 
 
     def validateFieldValues(self):
