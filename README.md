@@ -36,6 +36,7 @@ Before you run the bot, edit the configuration portion of the script. This will 
 EMAIL = 'youremail@gmail.com'
 PASSWORD = 'password'
 LOGIN_SERVICE = 'Google, Twitter, or Facebook'
+DRIVER = 'none'
 LIKE_POSTS = True
 RANDOMIZE_LIKING_POSTS = True
 MAX_LIKES_ON_POST = 50 # only like posts with less than X posts.
