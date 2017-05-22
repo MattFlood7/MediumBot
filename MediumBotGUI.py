@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# Author: Matt Flood
 
 """
 MediumBot's configuration GUI to make it easier for non-technical users to use
@@ -364,7 +365,7 @@ class MediumBotGUI(Frame):
         articlesConverted = self.convertStringToArrayString(self.articleBlackListField.get())
         self.updateMediumBotVariable("ARTICLE_BLACK_LIST = "+articlesConverted)
         self.updateMediumBotVariable("FOLLOW_USERS = "+self.followUsers.get())
-        self.updateMediumBotVariable("RANDOMIZE_FOLLOWING_USERS = "+self.randomizeUnfollowingUsers.get())
+        self.updateMediumBotVariable("RANDOMIZE_FOLLOWING_USERS = "+self.randomizeFollowingUsers.get())
         self.updateMediumBotVariable("UNFOLLOW_USERS = "+self.unfollowUsers.get())
         self.updateMediumBotVariable("RANDOMIZE_UNFOLLOWING_USERS = "+self.randomizeUnfollowingUsers.get())
         unfollowConverted = self.convertStringToArrayString(self.unfollowBlackListField.get())
@@ -388,7 +389,12 @@ class MediumBotGUI(Frame):
             with open(FILE_PATH) as oldFile:
 
                 for line in oldFile:
-                    if variableToUpdate in line and " = " in line and "if" not in line and "elif" not in line and ".lower()" not in line:
+                    if (variableToUpdate+" =" in line and " = " in line
+                        and "if" not in line and "elif" not in line
+                        and ".lower()" not in line and "(" not in line
+                        and ((variableToUpdate == "FOLLOW_USERS"
+                        and "UNFOLLOW_USERS" not in line) or variableToUpdate != "FOLLOW_USERS")):
+
                         newFile.write(value+"\n")
                     else:
                         newFile.write(line)
@@ -405,7 +411,16 @@ class MediumBotGUI(Frame):
         return: the formatted string.
         """
 
-        return ""
+        array = [x.strip() for x in valueToConvert.split(',')]
+        result = ""
+
+        for val in array:
+            if result != "":
+                result = result+", '"+val+"'"
+            else:
+                result = "'"+val+"'"
+
+        return "["+result+"]"
 
 
 def main():
