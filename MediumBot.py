@@ -11,6 +11,7 @@ from random import shuffle
 EMAIL = 'youremail@gmail.com'
 PASSWORD = 'password'
 LOGIN_SERVICE = 'Google, Twitter, or Facebook'
+DRIVER = 'none'
 LIKE_POSTS = True
 RANDOMIZE_LIKING_POSTS = True
 MAX_LIKES_ON_POST = 50
@@ -32,24 +33,35 @@ def Launch():
     Launch the Medium bot and ask the user what browser they want to use.
     """
 
-    # Browser choice
-    print 'Choose your browser:'
-    print '[1] Chrome'
-    print '[2] Firefox/Iceweasel'
-    print '[3] PhantomJS'
+    if 'chrome' not in DRIVER.lower() and 'firefox' not in DRIVER.lower() and 'phantomjs' not in DRIVER.lower():
 
-    while True:
-        try:
-            browserChoice = int(raw_input('Choice? '))
-        except ValueError:
-            print 'Invalid choice.',
-        else:
-            if browserChoice not in [1,2,3]:
+        # Browser choice
+        print 'Choose your browser:'
+        print '[1] Chrome'
+        print '[2] Firefox/Iceweasel'
+        print '[3] PhantomJS'
+
+        while True:
+            try:
+                browserChoice = int(raw_input('Choice? '))
+            except ValueError:
                 print 'Invalid choice.',
             else:
-                break
+                if browserChoice not in [1,2,3]:
+                    print 'Invalid choice.',
+                else:
+                    break
 
-    StartBrowser(browserChoice)
+        StartBrowser(browserChoice)
+
+    elif 'chrome' in DRIVER.lower():
+        StartBrowser(1)
+
+    elif 'firefox' in DRIVER.lower():
+        StartBrowser(2)
+
+    elif 'phantomjs' in DRIVER.lower():
+        StartBrowser(3)
 
 
 def StartBrowser(browserChoice):
