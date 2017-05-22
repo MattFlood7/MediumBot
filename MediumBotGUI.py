@@ -35,18 +35,6 @@ class MediumBotGUI(Frame):
 
         mediumBotVariables = self.parseMediumBot()
 
-        service = IntVar()
-        likePosts = IntVar()
-        randomizeLikes = IntVar()
-        commentOnPosts = IntVar()
-        randomizeComments = IntVar()
-        followUsers = IntVar()
-        randomizeFollowingUsers = IntVar()
-        unfollowUsers = IntVar()
-        randomizeUnfollowingUsers = IntVar()
-        useRelatedTags = IntVar()
-        verbose = IntVar()
-
         self.parent.title("Medium Bot")
         self.pack(fill=BOTH, expand=True)
         self.columnconfigure(1, weight=1)
@@ -55,9 +43,9 @@ class MediumBotGUI(Frame):
         self.rowconfigure(5, pad=7)
 
         Label(self, text="Email: ").grid(sticky=W, pady=4, padx=5)
-        self.emailTextField = Entry(self, width = 100)
-        self.emailTextField.grid(row=0, column=1, columnspan = 3)
-        self.emailTextField.insert(10, mediumBotVariables["EMAIL"])
+        self.emailField = Entry(self, width = 100)
+        self.emailField.grid(row=0, column=1, columnspan = 3)
+        self.emailField.insert(10, mediumBotVariables["EMAIL"])
 
         Label(self, text="Password: ").grid(sticky=W, pady=4, padx=5)
         self.passwordField = Entry(self, show="*", width = 100)
@@ -68,69 +56,84 @@ class MediumBotGUI(Frame):
         self.serviceDropDown = Combobox(self, values=["Google", "Facebook", "Twitter"], width = 100)
         self.serviceDropDown.grid(row=2, column=1, columnspan = 3)
 
+        Label(self, text="Driver: ").grid(sticky=W, pady=4, padx=5)
+        self.driverDropDown = Combobox(self, values=["Chrome", "Firefox/Iceweasel", "PhantomJS"], width = 100)
+        self.driverDropDown.grid(row=3, column=1, columnspan = 3)
+
         Label(self, text="Like Posts: ").grid(sticky=W, pady=4, padx=5)
-        self.likePostsCheckBox = Checkbutton(self, text="", variable=likePosts)
-        self.likePostsCheckBox.grid(row=3, column = 1, columnspan = 3)
+        self.likePosts = StringVar(value=mediumBotVariables["LIKE_POSTS"])
+        self.likePostsCheckBox = Checkbutton(self, text="", variable=self.likePosts, onvalue='True', offvalue='False')
+        self.likePostsCheckBox.grid(row=4, column = 1, columnspan = 3)
 
         Label(self, text="Randomize Likes: ").grid(sticky=W, pady=4, padx=5)
-        self.randomizeLikesCheckBox = Checkbutton(self, text="", variable=randomizeLikes)
-        self.randomizeLikesCheckBox.grid(row=4, column = 1, columnspan = 3)
+        self.randomizeLikes = StringVar(value=mediumBotVariables["RANDOMIZE_LIKING_POSTS"])
+        self.randomizeLikesCheckBox = Checkbutton(self, text="", variable=self.randomizeLikes, onvalue='True', offvalue='False')
+        self.randomizeLikesCheckBox.grid(row=5, column = 1, columnspan = 3)
 
         Label(self, text="Max Likes On Posts: ").grid(sticky=W, pady=4, padx=5)
         self.maxLikesField = Entry(self, width = 100)
-        self.maxLikesField.grid(row=5, column=1, columnspan = 3)
+        self.maxLikesField.grid(row=6, column=1, columnspan = 3)
         self.maxLikesField.insert(10, mediumBotVariables["MAX_LIKES_ON_POST"])
 
         Label(self, text="Comment On Posts: ").grid(sticky=W, pady=4, padx=5)
-        self.commentPostsCheckBox = Checkbutton(self, text="", variable=commentOnPosts)
-        self.commentPostsCheckBox.grid(row=6, column = 1, columnspan = 3)
+        self.commentOnPosts = StringVar(value=mediumBotVariables["COMMENT_ON_POSTS"])
+        self.commentPostsCheckBox = Checkbutton(self, text="", variable=self.commentOnPosts, onvalue='True', offvalue='False')
+        self.commentPostsCheckBox.grid(row=7, column = 1, columnspan = 3)
 
         Label(self, text="Randomize Comments: ").grid(sticky=W, pady=4, padx=5)
-        self.randomizeCommentsCheckBox = Checkbutton(self, text="", variable=randomizeComments)
-        self.randomizeCommentsCheckBox.grid(row=7, column = 1, columnspan = 3)
+        self.randomizeComments = StringVar(value=mediumBotVariables["RANDOMIZE_COMMENTING_ON_POSTS"])
+        self.randomizeCommentsCheckBox = Checkbutton(self, text="", variable=self.randomizeComments, onvalue='True', offvalue='False')
+        self.randomizeCommentsCheckBox.grid(row=8, column = 1, columnspan = 3)
 
         Label(self, text="Comments: ").grid(sticky=W, pady=4, padx=5)
         self.commentsField = Entry(self, width = 100)
-        self.commentsField.grid(row=8, column=1, columnspan = 3)
+        self.commentsField.grid(row=9, column=1, columnspan = 3)
         self.commentsField.insert(10, mediumBotVariables["COMMENTS"])
 
         Label(self, text="Article Black List: ").grid(sticky=W, pady=4, padx=5)
         self.articleBlackListField = Entry(self, width = 100)
-        self.articleBlackListField.grid(row=9, column=1, columnspan = 3)
+        self.articleBlackListField.grid(row=10, column=1, columnspan = 3)
         self.articleBlackListField.insert(10, mediumBotVariables["ARTICLE_BLACK_LIST"])
 
         Label(self, text="Follow Users: ").grid(sticky=W, pady=4, padx=5)
-        self.followUsersCheckBox = Checkbutton(self, text="", variable=followUsers)
-        self.followUsersCheckBox.grid(row=10, column = 1, columnspan = 3)
+        self.followUsers = StringVar(value=mediumBotVariables["FOLLOW_USERS"])
+        self.followUsersCheckBox = Checkbutton(self, text="", variable=self.followUsers, onvalue='True', offvalue='False')
+        self.followUsersCheckBox.grid(row=11, column = 1, columnspan = 3)
 
         Label(self, text="Randomize Following: ").grid(sticky=W, pady=4, padx=5)
-        self.randomizeFollowingCheckBox = Checkbutton(self, text="", variable=randomizeFollowingUsers)
-        self.randomizeFollowingCheckBox.grid(row=11, column = 1, columnspan = 3)
+        self.randomizeFollowingUsers = StringVar(value=mediumBotVariables["RANDOMIZE_FOLLOWING_USERS"])
+        self.randomizeFollowingCheckBox = Checkbutton(self, text="", variable=self.randomizeFollowingUsers, onvalue='True', offvalue='False')
+        self.randomizeFollowingCheckBox.grid(row=12, column = 1, columnspan = 3)
 
         Label(self, text="Unfollow Users: ").grid(sticky=W, pady=4, padx=5)
-        self.unfollowUsersCheckBox = Checkbutton(self, text="", variable=unfollowUsers)
-        self.unfollowUsersCheckBox.grid(row=12, column = 1, columnspan = 3)
+        self.unfollowUsers = StringVar(value=mediumBotVariables["UNFOLLOW_USERS"])
+        self.unfollowUsersCheckBox = Checkbutton(self, text="", variable=self.unfollowUsers, onvalue='True', offvalue='False')
+        self.unfollowUsersCheckBox.grid(row=13, column = 1, columnspan = 3)
 
         Label(self, text="Randomize Unfollowing: ").grid(sticky=W, pady=4, padx=5)
-        self.randomizeUnfollowingCheckBox = Checkbutton(self, text="", variable=randomizeUnfollowingUsers)
-        self.randomizeUnfollowingCheckBox.grid(row=13, column = 1, columnspan = 3)
+        self.randomizeUnfollowingUsers = StringVar(value=mediumBotVariables["RANDOMIZE_UNFOLLOWING_USERS"])
+        self.randomizeUnfollowingCheckBox = Checkbutton(self, text="", variable=self.randomizeUnfollowingUsers, onvalue='True', offvalue='False')
+        self.randomizeUnfollowingCheckBox.grid(row=14, column = 1, columnspan = 3)
 
         Label(self, text="Unfollow Black List: ").grid(sticky=W, pady=4, padx=5)
         self.unfollowBlackListField = Entry(self, width = 100)
-        self.unfollowBlackListField.grid(row=14, column=1, columnspan = 3)
+        self.unfollowBlackListField.grid(row=15, column=1, columnspan = 3)
         self.unfollowBlackListField.insert(10, mediumBotVariables["UNFOLLOW_USERS_BLACK_LIST"])
 
         Label(self, text="Use Related Tags: ").grid(sticky=W, pady=4, padx=5)
-        self.useRelatedTagsCheckBox = Checkbutton(self, text="", variable=useRelatedTags)
-        self.useRelatedTagsCheckBox.grid(row=15, column = 1, columnspan = 3)
+        self.useRelatedTags = StringVar(value=mediumBotVariables["USE_RELATED_TAGS"])
+        self.useRelatedTagsCheckBox = Checkbutton(self, text="", variable=self.useRelatedTags, onvalue='True', offvalue='False')
+        self.useRelatedTagsCheckBox.grid(row=16, column = 1, columnspan = 3)
 
         Label(self, text="Articles Per Tag: ").grid(sticky=W, pady=4, padx=5)
         self.articlesPerTagField = Entry(self, width = 100)
-        self.articlesPerTagField.grid(row=16, column=1, columnspan = 3)
+        self.articlesPerTagField.grid(row=17, column=1, columnspan = 3)
+        self.articlesPerTagField.insert(10, mediumBotVariables["ARTICLES_PER_TAG"])
 
         Label(self, text="Verbose Output: ").grid(sticky=W, pady=4, padx=5)
-        self.verboseCheckBox = Checkbutton(self, text="", variable=verbose)
-        self.verboseCheckBox.grid(row=17, column = 1, columnspan = 3)
+        self.verbose = StringVar(value=mediumBotVariables["VERBOSE"])
+        self.verboseCheckBox = Checkbutton(self, text="", variable=self.verbose, onvalue='True', offvalue='False')
+        self.verboseCheckBox.grid(row=18, column = 1, columnspan = 3)
 
         obtn = Button(self, text="Start Bot", command=self.runMediumBot)
         obtn.grid(row=20, column=3)
@@ -179,6 +182,7 @@ class MediumBotGUI(Frame):
         """
         Validate the values entered in the fields
         """
+        # TODO
 
         return True
 
@@ -189,24 +193,46 @@ class MediumBotGUI(Frame):
         is clicked.
         """
 
-        print "TODO"
+        self.updateMediumBotVariable("EMAIL = '"+self.emailField.get()+"'")
+        self.updateMediumBotVariable("PASSWORD = '"+self.passwordField.get()+"'")
+        self.updateMediumBotVariable("LOGIN_SERVICE = '"+self.serviceDropDown.get()+"'")
+        self.updateMediumBotVariable("DRIVER = '"+self.driverDropDown.get()+"'")
+        self.updateMediumBotVariable("LIKE_POSTS = "+self.likePosts.get())
+        self.updateMediumBotVariable("RANDOMIZE_LIKING_POSTS = "+self.randomizeLikes.get())
+        self.updateMediumBotVariable("MAX_LIKES_ON_POST = "+self.maxLikesField.get())
+        self.updateMediumBotVariable("COMMENT_ON_POSTS = "+self.commentOnPosts.get())
+        self.updateMediumBotVariable("RANDOMIZE_LIKING_POSTS = "+self.randomizeComments.get())
+        commentsConverted = self.convertStringToArrayString(self.commentsField.get())
+        self.updateMediumBotVariable("COMMENTS = "+commentsConverted)
+        articlesConverted = self.convertStringToArrayString(self.articleBlackListField.get())
+        self.updateMediumBotVariable("ARTICLE_BLACK_LIST = "+articlesConverted)
+        self.updateMediumBotVariable("FOLLOW_USERS = "+self.followUsers.get())
+        self.updateMediumBotVariable("RANDOMIZE_FOLLOWING_USERS = "+self.randomizeUnfollowingUsers.get())
+        self.updateMediumBotVariable("UNFOLLOW_USERS = "+self.unfollowUsers.get())
+        self.updateMediumBotVariable("RANDOMIZE_UNFOLLOWING_USERS = "+self.randomizeUnfollowingUsers.get())
+        unfollowConverted = self.convertStringToArrayString(self.unfollowBlackListField.get())
+        self.updateMediumBotVariable("UNFOLLOW_USERS_BLACK_LIST = "+unfollowConverted)
+        self.updateMediumBotVariable("USE_RELATED_TAGS = "+self.useRelatedTags.get())
+        self.updateMediumBotVariable("ARTICLES_PER_TAG = "+self.articlesPerTagField.get())
+        self.updateMediumBotVariable("VERBOSE = "+self.verbose.get())
 
 
-    def updateMediumBotVariable(self, variableToUpdate, value):
+    def updateMediumBotVariable(self, value):
         """
         Update a variable in the MediumBot.py file.
-        variableToUpdate: the variable that is being update in MediumBot.py.
         value: value to update the variable in MediumBot.py to.
         """
 
+        variableToUpdate = value.split()[0]
         fh, abs_path = mkstemp()
+
         with open(abs_path,'w') as newFile:
 
             with open(FILE_PATH) as oldFile:
 
                 for line in oldFile:
-                    if variableToUpdate in line and " = " in line and "if" not in line and "elif" not in line:
-                        newFile.write(variableToUpdate+" = "+value)
+                    if variableToUpdate in line and " = " in line and "if" not in line and "elif" not in line and ".lower()" not in line:
+                        newFile.write(value+"\n")
                     else:
                         newFile.write(line)
 
@@ -215,13 +241,23 @@ class MediumBotGUI(Frame):
         move(abs_path, FILE_PATH)
 
 
+    def convertStringToArrayString(self, valueToConvert):
+        """
+        Convert the comma deliminated string to an array formatted string.
+        valueToConvert: string to convert in to an array formatted string.
+        return: the formatted string.
+        """
+
+        return ""
+
+
 def main():
     """
     Set the gui's window size, initialize and launch
     """
 
     root = Tk()
-    root.geometry("500x550+300+300")
+    root.geometry("500x570+300+300")
     app = MediumBotGUI(root)
     root.mainloop()
 
