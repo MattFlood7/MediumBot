@@ -67,6 +67,7 @@ class MediumBotGUI(Frame):
     def initEmailUI(self, mediumBotVariables):
         """
         Initialize the Email UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Email: ").grid(sticky=W, pady=4, padx=5)
@@ -78,6 +79,7 @@ class MediumBotGUI(Frame):
     def initPasswordUI(self, mediumBotVariables):
         """
         Initialize the Password UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Password: ").grid(sticky=W, pady=4, padx=5)
@@ -89,6 +91,7 @@ class MediumBotGUI(Frame):
     def initLoginServiceUI(self, mediumBotVariables):
         """
         Initialize the Login Service UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Service: ").grid(sticky=W, pady=4, padx=5)
@@ -107,6 +110,7 @@ class MediumBotGUI(Frame):
     def initDriverUI(self, mediumBotVariables):
         """
         Initialize the Driver UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Driver: ").grid(sticky=W, pady=4, padx=5)
@@ -126,6 +130,7 @@ class MediumBotGUI(Frame):
     def initLikePostsUI(self, mediumBotVariables):
         """
         Initialize the Like Posts UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Like Posts: ").grid(sticky=W, pady=4, padx=5)
@@ -137,6 +142,7 @@ class MediumBotGUI(Frame):
     def initRandomizeLikesUI(self, mediumBotVariables):
         """
         Initialize the Randomize Likes UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Randomize Likes: ").grid(sticky=W, pady=4, padx=5)
@@ -148,6 +154,7 @@ class MediumBotGUI(Frame):
     def initMaxLikesUI(self, mediumBotVariables):
         """
         Initialize the Max Likes UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Max Likes On Posts: ").grid(sticky=W, pady=4, padx=5)
@@ -159,6 +166,7 @@ class MediumBotGUI(Frame):
     def initCommentUI(self, mediumBotVariables):
         """
         Initialize the Comment UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Comment On Posts: ").grid(sticky=W, pady=4, padx=5)
@@ -170,6 +178,7 @@ class MediumBotGUI(Frame):
     def initRandomizeCommentsUI(self, mediumBotVariables):
         """
         Initialize the Randomize Comments UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Randomize Comments: ").grid(sticky=W, pady=4, padx=5)
@@ -181,6 +190,7 @@ class MediumBotGUI(Frame):
     def initCommentsUI(self, mediumBotVariables):
         """
         Initialize the Comments UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Comments: ").grid(sticky=W, pady=4, padx=5)
@@ -192,6 +202,7 @@ class MediumBotGUI(Frame):
     def initArticleBlackListUI(self, mediumBotVariables):
         """
         Initialize the Article Black List UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Article Black List: ").grid(sticky=W, pady=4, padx=5)
@@ -203,6 +214,7 @@ class MediumBotGUI(Frame):
     def initFollowUsersUI(self, mediumBotVariables):
         """
         Initialize the Follow Users UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Follow Users: ").grid(sticky=W, pady=4, padx=5)
@@ -214,6 +226,7 @@ class MediumBotGUI(Frame):
     def initRandomizeFollowingUI(self, mediumBotVariables):
         """
         Initialize the Randomize Following UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Randomize Following: ").grid(sticky=W, pady=4, padx=5)
@@ -225,6 +238,7 @@ class MediumBotGUI(Frame):
     def initUnFollowUsersUI(self, mediumBotVariables):
         """
         Initialize the UnFollow Users UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Unfollow Users: ").grid(sticky=W, pady=4, padx=5)
@@ -236,6 +250,7 @@ class MediumBotGUI(Frame):
     def initRandomizeUnFollowingUI(self, mediumBotVariables):
         """
         Initialize the Randomize UnFollowing UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Randomize Unfollowing: ").grid(sticky=W, pady=4, padx=5)
@@ -247,6 +262,7 @@ class MediumBotGUI(Frame):
     def initUnFollowingUsersBlackListUI(self, mediumBotVariables):
         """
         Initialize the UnFollowing Users Black List UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Unfollow Black List: ").grid(sticky=W, pady=4, padx=5)
@@ -258,6 +274,7 @@ class MediumBotGUI(Frame):
     def initUseRelatedTagsUI(self, mediumBotVariables):
         """
         Initialize the Use Related Tags UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Use Related Tags: ").grid(sticky=W, pady=4, padx=5)
@@ -269,6 +286,7 @@ class MediumBotGUI(Frame):
     def initArticlesPerTagUI(self, mediumBotVariables):
         """
         Initialize the Articles Per Tag UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Articles Per Tag: ").grid(sticky=W, pady=4, padx=5)
@@ -280,6 +298,7 @@ class MediumBotGUI(Frame):
     def initVerboseUI(self, mediumBotVariables):
         """
         Initialize the Verbose UI
+        mediumBotVariables: variables pulled from the MediumBot.py file
         """
 
         Label(self, text="Verbose Output: ").grid(sticky=W, pady=4, padx=5)
