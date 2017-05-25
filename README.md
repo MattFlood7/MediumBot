@@ -4,7 +4,7 @@ Increase your likelihood to grow your Medium account by viewing articles based o
 ## About
 It's hard to start out creating content with a small audience. Interacting with user's who have similar interests is the easiest way to build a social media platform but it is a long time consuming process to get there. Using the MediumBot you can drive user interaction how ever you want. Using the bot for an hour yeilded 15 notifications and 8 of those were followers.
 <p align="center">
-  <img src="https://image.ibb.co/h2G9wQ/medium_Bot_Results.png" alt="LinkedInBot Result" width="325" height="125">
+  <img src="https://image.ibb.co/bGC4Lv/Screenshot_at_May_23_08_56_12.png" alt="LinkedInBot Result" width="325" height="125">
 </p>
 
 ## Requirements
