@@ -36,7 +36,7 @@ Before you run the bot, edit the configuration portion of the script. This will 
 EMAIL = 'youremail@gmail.com'
 PASSWORD = 'password'
 LOGIN_SERVICE = 'Google, Twitter, or Facebook'
-DRIVER = 'none'
+DRIVER = 'Chrome, Firefox/Iceweasel, or PhantomJS'
 LIKE_POSTS = True
 RANDOMIZE_LIKING_POSTS = True
 MAX_LIKES_ON_POST = 50 # only like posts with less than X posts.
@@ -57,7 +57,14 @@ VERBOSE = True
 ## Run
 Once you have installed the required dependencies and edited the configuration constants, you can run the bot.
 
-Make sure you are in the correct folder and run the following command: `python MediumBot.py`
+If you would prefer to use the GUI to select your bot options through a GUI instead of editing a file make sure you are in the correct directory and run the MediumBotGUI using the following command: `python MediumBotGUI.py`
+You will be prompted with a Gui as shown below:
+
+<p align="center">
+  <img src="https://preview.ibb.co/d6GBYF/Screenshot_at_May_25_08_28_43.png" alt="LinkedInBot Result" width="500" height="600">
+</p>
+
+If you'd rather not use the GUI make sure you are in the correct directory and run the following command: `python MediumBot.py`
 
 Then, after choosing your favorite browser the bot will start visiting articles based on your tags and start liking and commenting articles or following and unfollowing users increase your visibility on Medium.
 

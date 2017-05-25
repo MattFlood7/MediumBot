@@ -11,7 +11,7 @@ from random import shuffle
 EMAIL = 'youremail@gmail.com'
 PASSWORD = 'password'
 LOGIN_SERVICE = 'Google, Twitter, or Facebook'
-DRIVER = 'none'
+DRIVER = 'Firefox'
 LIKE_POSTS = True
 RANDOMIZE_LIKING_POSTS = True
 MAX_LIKES_ON_POST = 50
