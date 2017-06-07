@@ -14,6 +14,7 @@ from tempfile import mkstemp
 from shutil import move
 from os import remove, close
 import os
+import re
 
 FILE_PATH = "MediumBot.py"
 
@@ -359,8 +360,7 @@ class MediumBotGUI(Frame):
         """
         Validate the values entered in the fields
         """
-        # TODO
-
+        
         return True
 
 
@@ -394,59 +394,87 @@ class MediumBotGUI(Frame):
         self.updateMediumBotVariable("VERBOSE = "+self.verbose.get())
 
 
-    def validateEmail(self, value):
+    def validateEmail(self):
         """
         Validate the email address passed is a valid email.
-        value: the email address to validate.
         return: true if the email is valid : false if the email is not valid.
         """
 
-        # TODO
-        return True
+        result = False
+        email = self.emailField.get()
+
+        if email:
+            result = re.match(r"[^@]+@[^@]+\.[^@]+", email)
+
+        return result
 
 
-    def validateMaxLikesOnPost(self, value):
+    def validatePassword(self):
+        """
+        Validate the password passed is ot empty.
+        return: true if the password is valid : false if the password is not valid.
+        """
+
+        result = False
+
+        if self.passwordField.get():
+            result = True
+
+        return result
+
+
+    def validateMaxLikesOnPost(self):
         """
         Validate the max likes value passed is valid.
-        value: the max likes value to validate.
         return: true if the max likes value is valid : false if the max likes value is not valid.
         """
 
-        # TODO
-        return True
+        return self.isNumberValid(self.maxLikesField.get())
 
 
-    def validateComments(self, value):
+    def validateComments(self):
         """
         Validate the comments passed are valid comments.
-        value: the comments to validate.
         return: true if the comments are valid : false if the comments are not valid.
         """
 
-        # TODO
-        return True
+        return self.notContainSpecialChars(self.commentsField.get())
 
 
-    def validateArticleBlackList(self, value):
+    def validateArticleBlackList(self):
         """
         Validate the article black list passed is valid.
-        value: the article black list to validate.
         return: true if the article black list is valid : false if the article black list is not valid.
         """
 
-        # TODO
-        return True
+        return self.notContainSpecialChars(self.articleBlackListField.get())
 
 
-    def validateUnfollowBlackList(self, value):
+    def validateUnfollowBlackList(self):
         """
         Validate the unfollow black list passed is valid.
-        value: the unfollow blacklist to validate.
         return: true if the unfollow blacklist is valid : false if the unfollow blacklist is not valid.
         """
 
-        # TODO
-        return True
+        return self.notContainSpecialChars(self.unfollowBlackListField.get())
+
+
+    def validateArticlesPerTag(self):
+        """
+        Validate the articles per tag value passed is valid.
+        return: true if the articles per tag value is valid : false if the articles per tag value is not valid.
+        """
+
+        return self.isNumberValid(self.articlesPerTagField.get())
+
+
+    def notContainSpecialChars(self, value):
+        """
+        Validate the string does not have any special characters.
+        value: string to validate that special characters do not exist.
+        """
+
+        return not set('[~!@#$%^&*()_+{}":;\']+$').intersection(value)
 
 
     def isNumberValid(self, value):
@@ -456,8 +484,12 @@ class MediumBotGUI(Frame):
         return: true if the number is valid : false if the number is not valid.
         """
 
-        # TODO
-        return True
+        result = False
+
+        if value:
+            result = isinstance(value, int)
+
+        return result
 
 
     def updateMediumBotVariable(self, value):
