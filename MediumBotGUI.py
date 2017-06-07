@@ -394,6 +394,72 @@ class MediumBotGUI(Frame):
         self.updateMediumBotVariable("VERBOSE = "+self.verbose.get())
 
 
+    def validateEmail(self, value):
+        """
+        Validate the email address passed is a valid email.
+        value: the email address to validate.
+        return: true if the email is valid : false if the email is not valid.
+        """
+
+        # TODO
+        return True
+
+
+    def validateMaxLikesOnPost(self, value):
+        """
+        Validate the max likes value passed is valid.
+        value: the max likes value to validate.
+        return: true if the max likes value is valid : false if the max likes value is not valid.
+        """
+
+        # TODO
+        return True
+
+
+    def validateComments(self, value):
+        """
+        Validate the comments passed are valid comments.
+        value: the comments to validate.
+        return: true if the comments are valid : false if the comments are not valid.
+        """
+
+        # TODO
+        return True
+
+
+    def validateArticleBlackList(self, value):
+        """
+        Validate the article black list passed is valid.
+        value: the article black list to validate.
+        return: true if the article black list is valid : false if the article black list is not valid.
+        """
+
+        # TODO
+        return True
+
+
+    def validateUnfollowBlackList(self, value):
+        """
+        Validate the unfollow black list passed is valid.
+        value: the unfollow blacklist to validate.
+        return: true if the unfollow blacklist is valid : false if the unfollow blacklist is not valid.
+        """
+
+        # TODO
+        return True
+
+
+    def isNumberValid(self, value):
+        """
+        Validate the number passed is a valid number.
+        value: the number to validate.
+        return: true if the number is valid : false if the number is not valid.
+        """
+
+        # TODO
+        return True
+
+
     def updateMediumBotVariable(self, value):
         """
         Update a variable in the MediumBot.py file.
