@@ -1,9 +1,6 @@
 # MediumBot
 Increase your likelihood to grow your Medium account by viewing articles based on your followed tags by liking articles and leaving comments on articles.
 
-## NOTE:
-Medium recently updated it's UI and the bot is currently not running properly due to this. I am working to get this fixed. A solution will be up soon to get around the issues. Thanks for understanding. - Matt
-
 ## About
 It's hard to start out creating content with a small audience. Interacting with user's who have similar interests is the easiest way to build a social media platform but it is a long time consuming process to get there. Using the MediumBot you can drive user interaction how ever you want. Using the bot for an hour yeilded 15 notifications and 8 of those were followers.
 <p align="center">
