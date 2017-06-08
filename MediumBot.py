@@ -267,6 +267,7 @@ def ScrapeUsersFavoriteTagsUrls(browser):
     """
 
     browser.get("https://medium.com/me/following/tags")
+    time.sleep(5)
     soup = BeautifulSoup(browser.page_source, "lxml")
     tagURLS = []
     print 'Gathering your favorited tags'
@@ -289,13 +290,15 @@ def ScrapeUsersFavoriteTagsUrls(browser):
             print 'No favorited tags found. Grabbing the suggested tags as a starting point.'
 
         try:
-            time.sleep(5)
-            # TODO cannot get the suggestions
-
+            for div in soup.find_all('div', class_='u-sizeFull u-paddingTop10 u-paddingBottom10 u-borderBox'):
+                for a in div.find_all('a'):
+                    if a["href"] not in tagURLS:
+                        tagURLS.append(a["href"])
+                        if VERBOSE:
+                            print a["href"]
         except:
-            print 'Exception thrown in ScrapeUsersFavoriteTagsUrls()'
+            print 'Exception thrown in ScrapeArticlesOffTagPage()'
             pass
-
     print ''
 
     return tagURLS
