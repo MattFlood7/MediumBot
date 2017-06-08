@@ -8,10 +8,10 @@ from bs4 import BeautifulSoup
 from random import shuffle
 
 # Configure constants here
-EMAIL = 'MFlood7356@gmail.com'
-PASSWORD = 'ziggy7777'
-LOGIN_SERVICE = 'Google'
-DRIVER = 'Firefox/Iceweasel'
+EMAIL = 'youremail@gmail.com'
+PASSWORD = 'password'
+LOGIN_SERVICE = 'Google, Twitter, or Facebook'
+DRIVER = 'Firefox'
 LIKE_POSTS = True
 RANDOMIZE_LIKING_POSTS = True
 MAX_LIKES_ON_POST = 50
