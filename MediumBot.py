@@ -220,11 +220,6 @@ def MediumBot(browser):
     tagURLsVisitedThisLoop = []
     articleURLsVisited = []
 
-    # Get rid of any surpise pop ups on the landing page
-    for counter in range(0,5):
-        browser.refresh()
-        time.sleep(5)
-
     # Infinite loop
     while True:
 
@@ -271,23 +266,36 @@ def ScrapeUsersFavoriteTagsUrls(browser):
     browser: selenium webdriver used for beautifulsoup.
     """
 
+    browser.get("https://medium.com/me/following/tags")
     soup = BeautifulSoup(browser.page_source, "lxml")
     tagURLS = []
     print 'Gathering your favorited tags'
 
     try:
-        for ul in soup.find_all('ul', class_='tags--postTags'):
-            for li in ul.find_all('li'):
+        for div in soup.find_all('div', class_='u-tableCell u-verticalAlignMiddle'):
+            for a in div.find_all('a'):
+                if a["href"] not in tagURLS:
+                    tagURLS.append(a["href"])
+                    if VERBOSE:
+                        print a["href"]
 
-                a = li.find('a')
-                tagURLS.append(a['href'])
-
-                if VERBOSE:
-                    print a['href']
     except:
-        if VERBOSE:
-            print 'Exception thrown in ScrapeUsersFavoriteTagsUrls()'
+        print 'Exception thrown in ScrapeUsersFavoriteTagsUrls()'
         pass
+
+    if not tagURLS or USE_RELATED_TAGS:
+
+        if not tagURLS:
+            print 'No favorited tags found. Grabbing the suggested tags as a starting point.'
+
+        try:
+            time.sleep(5)
+            # TODO cannot get the suggestions
+
+        except:
+            print 'Exception thrown in ScrapeUsersFavoriteTagsUrls()'
+            pass
+
     print ''
 
     return tagURLS
