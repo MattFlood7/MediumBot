@@ -25,6 +25,7 @@ UNFOLLOW_USERS = False
 RANDOMIZE_UNFOLLOWING_USERS = False
 UNFOLLOW_USERS_BLACK_LIST = ['DontUnFollowMe']
 USE_RELATED_TAGS = True
+# Be careful using a large amount of articles per tag if you follow many tags!!!
 ARTICLES_PER_TAG = 250
 VERBOSE = True
 
