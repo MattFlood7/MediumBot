@@ -15,9 +15,9 @@ Before you can run the bot, you will need to install a few Python dependencies.
 *Note: Python 2.7.9 and later (on the python2 series), and Python 3.4 and later include pip by default, so you may have pip already. Otherwise, you can install [easy_install](https://pythonhosted.org/setuptools/easy_install.html) `sudo apt-get install python-setuptools` to install [pip](https://pypi.python.org/pypi/pip) `sudo easy_install pip`.*
 
 - [BeautifulSoup4](https://pypi.python.org/pypi/beautifulsoup4), for parsing html: `pip install BeautifulSoup4`
+- [lxml](http://lxml.de/intro.html), to assist with BeautifulSoups' parsing: `pip install lxml`
 - [Selenium](http://www.seleniumhq.org/), for browser automation: `pip install Selenium`
-
-If you plan to use Firefox (or Iceweasel) you don't need anything more.
+If you plan to use Firefox (or Iceweasel) you don't need anything more. (Note: you actually may need to install GeckoDriver if your FireFox install is fairly new)
 
 For Chrome, first get the [webdriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) then put it in the same folder than the bot if you are on Windows, or in the `/usr/bin` folder if you are on OS X.
 
