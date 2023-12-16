@@ -8,7 +8,7 @@ It's hard to start out creating content with a small audience. Interacting with 
 </p>
 
 ## Requirements
-MediumBot was developed under [Pyhton 2.7](https://www.python.org/downloads).
+MediumBot was developed under [Python 2.7](https://www.python.org/downloads).
 
 Before you can run the bot, you will need to install a few Python dependencies.
 
